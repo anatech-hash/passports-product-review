@@ -266,7 +266,7 @@ code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; backgrou
     <span class="sync-dot"></span>
     Sincronizado · 4 Jul 2026
   </div>
-  <button class="ask-btn">🤖 Ask the Product Brain</button>
+  <button class="ask-btn" onclick="pbOpen()">🤖 Ask the Product Brain</button>
 </div>
 
 <!-- MAIN -->
@@ -1282,5 +1282,359 @@ function go(id, el) {
   window.scrollTo(0,0);
 }
 </script>
+
+<!-- PRODUCT BRAIN CHAT MODAL -->
+<style>
+.pb-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 9000;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 24px;
+}
+.pb-overlay.open { display: flex; }
+.pb-modal {
+  width: 420px;
+  max-height: 70vh;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: pb-slide-up 0.2s ease;
+}
+@keyframes pb-slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.pb-header {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.pb-header-left { display: flex; align-items: center; gap: 8px; }
+.pb-header-icon {
+  width: 28px; height: 28px;
+  background: #fff;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.pb-header-title { font-size: 13px; font-weight: 700; }
+.pb-header-sub { font-size: 10px; color: #737373; margin-top: 1px; }
+.pb-close {
+  background: none; border: none; color: #737373;
+  cursor: pointer; font-size: 18px; padding: 0;
+  line-height: 1; display: flex; align-items: center;
+}
+.pb-close:hover { color: #fff; }
+.pb-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f7f7f5;
+}
+.pb-msg {
+  max-width: 85%;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.pb-msg-user {
+  background: #1a1a1a;
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 3px;
+}
+.pb-msg-bot {
+  background: #fff;
+  color: #1a1a1a;
+  align-self: flex-start;
+  border: 1px solid #e8e6e1;
+  border-bottom-left-radius: 3px;
+}
+.pb-msg-bot a { color: #2563eb; }
+.pb-typing {
+  background: #fff;
+  border: 1px solid #e8e6e1;
+  border-radius: 10px;
+  border-bottom-left-radius: 3px;
+  padding: 9px 12px;
+  align-self: flex-start;
+  display: none;
+}
+.pb-typing span {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: #737373;
+  border-radius: 50%;
+  margin: 0 1px;
+  animation: pb-bounce 1.2s infinite;
+}
+.pb-typing span:nth-child(2) { animation-delay: 0.2s; }
+.pb-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pb-bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-5px); }
+}
+.pb-suggestions {
+  padding: 10px 16px 6px;
+  background: #f7f7f5;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  border-top: 1px solid #e8e6e1;
+  flex-shrink: 0;
+}
+.pb-suggestion {
+  background: #fff;
+  border: 1px solid #e8e6e1;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  color: #374151;
+  white-space: nowrap;
+}
+.pb-suggestion:hover { background: #f0f0ee; }
+.pb-input-area {
+  padding: 10px 12px;
+  background: #fff;
+  border-top: 1px solid #e8e6e1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.pb-input {
+  flex: 1;
+  border: 1px solid #e8e6e1;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  outline: none;
+  font-family: inherit;
+  resize: none;
+  max-height: 80px;
+  line-height: 1.4;
+}
+.pb-input:focus { border-color: #1a1a1a; }
+.pb-send {
+  width: 34px; height: 34px;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.pb-send:hover { background: #333; }
+.pb-send:disabled { background: #ccc; cursor: not-allowed; }
+</style>
+
+<div class="pb-overlay" id="pb-overlay" onclick="pbClickOutside(event)">
+  <div class="pb-modal">
+    <div class="pb-header">
+      <div class="pb-header-left">
+        <div class="pb-header-icon">🧠</div>
+        <div>
+          <div class="pb-header-title">Product Brain</div>
+          <div class="pb-header-sub">Passports & EaseGov · Datos semana 22–28 Jun</div>
+        </div>
+      </div>
+      <button class="pb-close" onclick="pbClose()">✕</button>
+    </div>
+
+    <div class="pb-messages" id="pb-messages">
+      <div class="pb-msg pb-msg-bot">
+        Hola 👋 Pregúntame cualquier dato del dashboard — ventas, apps/ventas, forecast, roadmap o competitive intel.
+      </div>
+    </div>
+
+    <div class="pb-typing" id="pb-typing">
+      <span></span><span></span><span></span>
+    </div>
+
+    <div class="pb-suggestions">
+      <span class="pb-suggestion" onclick="pbAsk(this.textContent)">¿Cuántas ventas tuvo EaseGov esta semana?</span>
+      <span class="pb-suggestion" onclick="pbAsk(this.textContent)">¿Qué alerta es más urgente?</span>
+      <span class="pb-suggestion" onclick="pbAsk(this.textContent)">¿Qué producto tiene el CR más bajo?</span>
+      <span class="pb-suggestion" onclick="pbAsk(this.textContent)">¿Cómo va el Q3 vs budget?</span>
+    </div>
+
+    <div class="pb-input-area">
+      <textarea class="pb-input" id="pb-input" placeholder="Pregunta sobre datos del dashboard..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();pbSend();}"></textarea>
+      <button class="pb-send" id="pb-send" onclick="pbSend()">↑</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PB_SYSTEM = `Eres el Product Brain de Leadtech. Respondes preguntas sobre los dos productos: Passports (mypassporthub.com) y EaseGov (easegov.com).
+
+DATOS ACTUALES DEL DASHBOARD (semana 22-28 Jun 2026):
+
+=== VENTAS Y APLICACIONES (Fuente: CR Tracker) ===
+Passports sem. 22-28 Jun: 261 ventas | 1.512 apps | Apps/Ventas 17.3% (↓ vs 26.6% sem.ant.)
+Passports sem. 15-21 Jun: 506 ventas | 1.905 apps | Apps/Ventas 26.6%
+Passports sem. 8-14 Jun: 378 ventas | 1.761 apps | Apps/Ventas 21.5%
+Passports sem. 1-7 Jun: 298 ventas | 1.119 apps | Apps/Ventas 26.6%
+EaseGov sem. 22-28 Jun: 631 ventas | 4.923 apps | Apps/Ventas 12.8% (↑ vs 10.3% sem.ant.)
+EaseGov sem. 15-21 Jun: 319 ventas | 3.090 apps | Apps/Ventas 10.3%
+EaseGov sem. 8-14 Jun: 291 ventas | 2.856 apps | Apps/Ventas 10.2%
+EaseGov sem. 1-7 Jun: 261 ventas | 2.445 apps | Apps/Ventas 10.7%
+
+=== APPS/VENTAS POR PRODUCTO EASEGOV (1-7 Jun → 22-28 Jun) ===
+TSA PreCheck New: 18.8% → 18.5% → 17.9% → 16.9% (tendencia bajista)
+SSC Social Security Card: 4.1% → 3.3% → 2.8% → 5.2% (recupera última sem.)
+DS-11 Passport new: 4.5% → 3.8% → 1.3% → 1.9% (CRITICO - mínimo histórico 1.3% sem.15-21 Jun)
+DS-82 Passport renewal: 4.9% → 4.5% → 3.0% → 5.2% (volatil)
+TSA PreCheck sostiene el CR global EaseGov (16-19%)
+
+=== PASSPORTS POR FORMULARIO ===
+DS-11: 23.2% → 16.9% → 22.8% → 16.1%
+DS-82: 36.5% → 34.0% → 35.4% → 17.0% (caída fuerte última sem.)
+
+=== FORECAST Y BUDGET ===
+Q2 Cierre: Mayo 3.521/20.000 (17.6%) | Junio 2.254/28.000 (8.1%)
+Passports Jun: 1.263 reales | EaseGov Jun: 991 reales
+Q3 Budget: PP 1.200/mes | EG 1.800/mes | Global 3.000/mes | Total Q3: 9.000
+Datos reales Q3 Julio: pendientes de Qlik
+KPIs Mayo (último dato Qlik): PP ARPU 129€ refunds 22.1% CB 4.1% | EG ARPU 96€ refunds 28.1% CB 3.6%
+Umbral alerta: refunds >30% | chargebacks >10%
+
+=== ROADMAP Q3 ===
+Objetivos Q3: ≥1.200 ventas/mes PP | ≥1.800 ventas/mes EG | suscripciones baseline en Julio
+In Development: Apple Pay EaseGov (P0 slip Q2), CR Optimization, Amplitude, CRM, New App EaseGov, TSA PreCheck nativo, TSA Renewal nativo
+Ready/Discovery: Expedited DS-64/DS-5504/Rush (PP), Go Premium sidenav, Renewal Watch, Cross-Selling, SSC nativo, Name Change, Family Pack, Fraud Detection (EG)
+Entregado Q2 (7 items): Expedited DS-11/DS-82, Google Pay, Apple Pay PP, Subscription Page, Perks, Radar, Token RevUp
+
+=== COMPETITIVE ===
+EaseGov vs GovPlus: GovPlus $159/año (EaseGov $89.99 es 77% mas barato). GovPlus lanzo Expert Services (7 verticales), Online Notary, Benefits Finder 1200+ programas, Unclaimed Money, Renewal Watch. 1.5M usuarios Trustpilot 4.8.
+Passports: HelloGov integra APVI (nuestro courier partner) + CLEAR+ (riesgo canibalización). Entry.com con marketing sofisticado (Patriot Passport $499). RushMyPassport moderó velocidad de 24h a 3 días.
+ETIAS UE confirmado Q4 2026 - oportunidad demanda anticipada pasaportes.
+FTC: $3.5B imposter scams 2025 - contexto refunds EaseGov.
+
+=== ALERTAS ===
+🔴 DS-11 EaseGov Apps/Ventas critico (1.3-4.5% jun, coincide deploy 28 May)
+🔴 PP Apps/Ventas 22-28 Jun 17.3% - minimo 4 semanas
+🔴 Q2 al 8.1% del budget junio
+🟡 Apple Pay EaseGov slip Q3 | Refunds Jun pendientes Qlik
+🔵 Patriot Passport State Dept (6 Jul solo DC)
+
+=== FUENTES ===
+CR Tracker: https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit
+Forecast 2026: https://docs.google.com/spreadsheets/d/1KFgr1_Sx4yuc1KajLbiHHjogRLc2kPWGFkhlgIaCtfo/edit
+Roadmap: https://drive.google.com/drive/folders/1JB1wMNmJjRraS6XCmHsC2VpexJ7ELXVs
+CI Drive: https://drive.google.com/drive/folders/1iWa86TzdbMxoxUuTqtgty2AdXuBBzhhQ
+
+Responde siempre en español. Directo y concreto. Si el dato no esta en el contexto indicalo. Cita la fuente. Max 3-4 lineas salvo que pidan mas detalle.`;
+let pbHistory = [];
+
+function pbOpen() {
+  document.getElementById('pb-overlay').classList.add('open');
+  document.getElementById('pb-input').focus();
+}
+function pbClose() {
+  document.getElementById('pb-overlay').classList.remove('open');
+}
+function pbClickOutside(e) {
+  if (e.target === document.getElementById('pb-overlay')) pbClose();
+}
+
+function pbAsk(q) {
+  document.getElementById('pb-input').value = q;
+  pbSend();
+}
+
+function pbAddMsg(text, role) {
+  const msgs = document.getElementById('pb-messages');
+  const div = document.createElement('div');
+  div.className = 'pb-msg ' + (role === 'user' ? 'pb-msg-user' : 'pb-msg-bot');
+  // Convertir URLs en links y saltos de línea
+  div.innerHTML = text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/
+/g,'<br>')
+    .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank">$1</a>');
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+async function pbSend() {
+  const input = document.getElementById('pb-input');
+  const q = input.value.trim();
+  if (!q) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('pb-send').disabled = true;
+
+  pbAddMsg(q, 'user');
+  pbHistory.push({ role: 'user', content: q });
+
+  const typing = document.getElementById('pb-typing');
+  typing.style.display = 'block';
+  document.getElementById('pb-messages').scrollTop = 9999;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: PB_SYSTEM,
+        messages: pbHistory
+      })
+    });
+
+    const data = await res.json();
+    typing.style.display = 'none';
+
+    const answer = data.content?.[0]?.text || 'No he podido obtener respuesta.';
+    pbHistory.push({ role: 'assistant', content: answer });
+    pbAddMsg(answer, 'bot');
+
+    // Limitar historial a últimas 10 interacciones
+    if (pbHistory.length > 20) pbHistory = pbHistory.slice(-20);
+
+  } catch(e) {
+    typing.style.display = 'none';
+    pbAddMsg('Error al conectar con el Product Brain. Inténtalo de nuevo.', 'bot');
+  }
+
+  document.getElementById('pb-send').disabled = false;
+  document.getElementById('pb-input').focus();
+}
+
+// Auto-resize textarea
+document.addEventListener('DOMContentLoaded', function() {
+  const inp = document.getElementById('pb-input');
+  if (inp) {
+    inp.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 80) + 'px';
+    });
+  }
+});
+</script>
+
 </body>
 </html>
