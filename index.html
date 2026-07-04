@@ -275,105 +275,51 @@ code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; backgrou
 <!-- ═══════════════════════ COMMAND CENTRE ═══════════════════════ -->
 <div id="pane-overview" class="pane active">
 
-  <!-- STAT STRIP -->
-  <div class="stat-strip">
-    <div class="stat-strip-item">
-      <div class="stat-strip-label">Ventas Passports <span style="font-weight:400;font-size:10px">22–28 Jun</span></div>
-      <div class="stat-strip-value" style="color:var(--blue)">261</div>
-      <div class="stat-strip-sub"><span class="down">↓ vs 506 sem. anterior</span> · <a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank" style="color:var(--muted);font-size:10px">CR Tracker ↗</a></div>
+  <!-- 1. VENTAS CARDS -->
+  <div class="section-title" style="margin-top:0">💰 Ventas — Semana 22–28 Jun 2026</div>
+  <div class="grid-4" style="margin-bottom:20px">
+    <div class="card" style="padding:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px">Ventas Passports</div>
+      <div style="font-size:32px;font-weight:800;color:var(--blue);line-height:1">261</div>
+      <div style="font-size:12px;color:var(--red);margin-top:4px">↓ vs 506 sem. anterior</div>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted)">Apps/Ventas: <strong>17.3%</strong></div>
+      <a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank" style="font-size:10px;color:var(--muted);margin-top:6px;display:block">CR Tracker ↗</a>
     </div>
-    <div class="stat-strip-item">
-      <div class="stat-strip-label">Ventas EaseGov <span style="font-weight:400;font-size:10px">22–28 Jun</span></div>
-      <div class="stat-strip-value" style="color:var(--purple)">631</div>
-      <div class="stat-strip-sub"><span class="up">↑ vs 319 sem. anterior</span> · <a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank" style="color:var(--muted);font-size:10px">CR Tracker ↗</a></div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px">Ventas EaseGov</div>
+      <div style="font-size:32px;font-weight:800;color:var(--purple);line-height:1">631</div>
+      <div style="font-size:12px;color:var(--green);margin-top:4px">↑ vs 319 sem. anterior</div>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted)">Apps/Ventas: <strong>12.8%</strong></div>
+      <a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank" style="font-size:10px;color:var(--muted);margin-top:6px;display:block">CR Tracker ↗</a>
     </div>
-    <div class="stat-strip-item">
-      <div class="stat-strip-label">Apps/Ventas PP <span style="font-weight:400;font-size:10px">22–28 Jun</span></div>
-      <div class="stat-strip-value">17.3%</div>
-      <div class="stat-strip-sub"><span class="down">↓ −9.3pp vs sem. ant.</span></div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px">Budget Q3 / mes Global</div>
+      <div style="font-size:32px;font-weight:800;line-height:1">3.000</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">PP 1.200 · EG 1.800</div>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted)">Seguimiento: sin datos Jul aún</div>
+      <a href="https://docs.google.com/spreadsheets/d/1KFgr1_Sx4yuc1KajLbiHHjogRLc2kPWGFkhlgIaCtfo/edit" target="_blank" style="font-size:10px;color:var(--muted);margin-top:6px;display:block">Forecast 2026 ↗</a>
     </div>
-    <div class="stat-strip-item">
-      <div class="stat-strip-label">Apps/Ventas EG <span style="font-weight:400;font-size:10px">22–28 Jun</span></div>
-      <div class="stat-strip-value">12.8%</div>
-      <div class="stat-strip-sub"><span class="up">↑ +2.5pp vs sem. ant.</span></div>
-    </div>
-    <div class="stat-strip-item">
-      <div class="stat-strip-label">Budget Q3/mes Global</div>
-      <div class="stat-strip-value">3.000</div>
-      <div class="stat-strip-sub"><a href="https://docs.google.com/spreadsheets/d/1KFgr1_Sx4yuc1KajLbiHHjogRLc2kPWGFkhlgIaCtfo/edit" target="_blank" style="color:var(--muted);font-size:10px">Forecast 2026 ↗</a></div>
-    </div>
-  </div>
-
-  <!-- ALERTAS -->
-  <div class="section-title">🚨 Alertas activas</div>
-
-  <div class="card">
-    <div class="alert-item alert-high">
-      <span class="alert-icon">🔴</span>
-      <div class="alert-content">
-        <div class="alert-title"><span class="pill pill-both">Global</span> &nbsp;Q2 cerrado al 8.1% del budget — presupuesto Q3 revisado a la baja</div>
-        <div class="alert-body">Cierre Q2: Jun 2.254 ventas vs budget 28.000 (8.1%) · May 3.521 vs 20.000 (17.6%). Budget Q3 ajustado a 3.000/mes global (vs 20-28k de Q2). Las causas son múltiples: slip de 7 iniciativas a Q3, baja conversión EaseGov, caída de tráfico en Passports.</div>
-        <div class="alert-meta">Fuente: FORECAST_2026.xlsx (hoja NSM) · roadmap_2026.md</div>
-      </div>
-    </div>
-
-    <div class="alert-item alert-high">
-      <span class="alert-icon">🔴</span>
-      <div class="alert-content">
-        <div class="alert-title"><span class="pill pill-e">EaseGov</span> &nbsp;CR Apps/Ventas EaseGov cayó de 13.2% (sem. 18–24 May) a 10.4% (sem. 25–31 May) tras el deploy del 28 May</div>
-        <div class="alert-body">El deploy de DS-11 Expedited (28 May) coincide con la caída más fuerte del CR global EaseGov: −21% en CR Step 1 y −21% en CR global en una semana. DS-11 registra el CR más bajo de todos los productos: 1.3%–4.5% en junio.</div>
-        <div class="alert-meta"><a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank">CR_Tracker.xlsx ↗</a> · semanas 25–31 May y 1–7 Jun</div>
-      </div>
-    </div>
-
-    <div class="alert-item alert-high">
-      <span class="alert-icon">🔴</span>
-      <div class="alert-content">
-        <div class="alert-title"><span class="pill pill-p">Passports</span> &nbsp;Apps/Ventas Passports 22–28 Jun: 17.3% — nivel mínimo de las últimas 4 semanas</div>
-        <div class="alert-body">Semana 22–28 Jun: 261 ventas sobre 1.512 applications (17.3%). Step 1 baja a 19.8% — el más bajo de las últimas 4 semanas. No hay cambio de deploy registrado esa semana; podría estar relacionado con mezcla de tráfico o pico artificial en la semana anterior (15–21 Jun).</div>
-        <div class="alert-meta"><a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank">CR_Tracker.xlsx ↗</a> · semana 22–28 Jun</div>
-      </div>
-    </div>
-
-    <div class="alert-item alert-med">
-      <span class="alert-icon">🟡</span>
-      <div class="alert-content">
-        <div class="alert-title"><span class="pill pill-e">EaseGov</span> &nbsp;Apple Pay slip a Q3 — checkout sin método de pago prioritario</div>
-        <div class="alert-body">Apple Pay EaseGov estaba previsto para Q2 y es slip a Q3. En Passports ya está live (11 May 2026). EaseGov pierde una palanca de conversión en checkout que ya tienen los competidores (GOV+ / Premier).</div>
-        <div class="alert-meta">Fuente: roadmap_2026.md · Q2 cierre</div>
-      </div>
-    </div>
-
-    <div class="alert-item alert-med">
-      <span class="alert-icon">🟡</span>
-      <div class="alert-content">
-        <div class="alert-title"><span class="pill pill-e">EaseGov</span> &nbsp;Refunds Jun 2026 — dato pendiente de Qlik (umbral de alerta: 30%)</div>
-        <div class="alert-body">Dato de Junio pendiente de Qlik. Umbral de alerta: 30% refunds. Actualizar en cuanto esté disponible en Qlik.</div>
-        <div class="alert-meta"><a href="https://docs.google.com/spreadsheets/d/1KFgr1_Sx4yuc1KajLbiHHjogRLc2kPWGFkhlgIaCtfo/edit" target="_blank">FORECAST_2026.xlsx ↗</a> · Qlik (dato Jun pendiente)</div>
-      </div>
-    </div>
-
-    <div class="alert-item alert-low">
-      <span class="alert-icon">🔵</span>
-      <div class="alert-content">
-        <div class="alert-title"><span class="pill pill-both">Mercado</span> &nbsp;State Dept lanza "Patriot Passport" conmemorativo — disponible desde 6 Jul solo en D.C.</div>
-        <div class="alert-body">Edición del 250 aniversario de EEUU. Solo presencial, sin afectar tiempos estándar. Podría generar un pico informativo de búsquedas sobre pasaportes esta semana.</div>
-        <div class="alert-meta"><a href="https://drive.google.com/drive/folders/1GYzjG-4skf_rBfmPDI2qwKIrYMwk8zkS" target="_blank" style="color:var(--muted)">Radar Drive ↗</a> · easegov-radar-2026-07-04.json</div>
-      </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px">Cierre Q2 — % alcanzado</div>
+      <div style="font-size:32px;font-weight:800;color:var(--red);line-height:1">8.1%</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">2.254 vs budget 28.000 (Jun)</div>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted)">Budget Q3 ajustado a la baja</div>
+      <a href="https://docs.google.com/spreadsheets/d/1KFgr1_Sx4yuc1KajLbiHHjogRLc2kPWGFkhlgIaCtfo/edit" target="_blank" style="font-size:10px;color:var(--muted);margin-top:6px;display:block">Forecast 2026 ↗</a>
     </div>
   </div>
 
-  <div class="section-title">📊 KPIs de negocio — Semana 22–28 Jun 2026 (último dato disponible · Qlik pendiente)</div>
-  <div class="grid-2">
+  <!-- 2. KPIs DE NEGOCIO -->
+  <div class="section-title">📊 KPIs de negocio — Semana 22–28 Jun 2026</div>
+  <div class="grid-2" style="margin-bottom:20px">
     <div class="card">
       <div class="card-head">
-        <div><div class="card-title">Passports</div><div class="card-sub">Fuente: Qlik · Forecast 2026</div></div>
+        <div><div class="card-title">Passports</div><div class="card-sub"><a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank" style="color:var(--muted)">CR Tracker ↗</a></div></div>
         <span class="pill pill-p">Passports</span>
       </div>
       <table class="data-table">
         <tbody>
-          <tr><td>Ventas sem. 22–28 Jun</td><td class="num">261</td><td><a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank" style="font-size:11px;color:var(--blue)">CR Tracker ↗</a></td></tr>
-          <tr><td>Apps sem. 22–28 Jun</td><td class="num">1.512</td><td><a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank" style="font-size:11px;color:var(--blue)">CR Tracker ↗</a></td></tr>
+          <tr><td>Ventas</td><td class="num">261</td><td class="muted">sem. 22–28 Jun</td></tr>
+          <tr><td>Applications</td><td class="num">1.512</td><td class="muted">sem. 22–28 Jun</td></tr>
           <tr><td>Apps/Ventas</td><td class="num down">17.3%</td><td class="muted">↓ vs 26.6% sem. ant.</td></tr>
           <tr><td>ARPU</td><td class="num muted">—</td><td class="muted">Pendiente Qlik</td></tr>
           <tr><td>Tráfico (clicks)</td><td class="num muted">—</td><td class="muted">Pendiente Qlik</td></tr>
@@ -384,13 +330,13 @@ code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; backgrou
     </div>
     <div class="card">
       <div class="card-head">
-        <div><div class="card-title">EaseGov</div><div class="card-sub">Fuente: Qlik · Forecast 2026</div></div>
+        <div><div class="card-title">EaseGov</div><div class="card-sub"><a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank" style="color:var(--muted)">CR Tracker ↗</a></div></div>
         <span class="pill pill-e">EaseGov</span>
       </div>
       <table class="data-table">
         <tbody>
-          <tr><td>Ventas sem. 22–28 Jun</td><td class="num up">631</td><td><a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank" style="font-size:11px;color:var(--purple)">CR Tracker ↗</a></td></tr>
-          <tr><td>Apps sem. 22–28 Jun</td><td class="num">4.923</td><td><a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank" style="font-size:11px;color:var(--purple)">CR Tracker ↗</a></td></tr>
+          <tr><td>Ventas</td><td class="num up">631</td><td class="muted">sem. 22–28 Jun</td></tr>
+          <tr><td>Applications</td><td class="num">4.923</td><td class="muted">sem. 22–28 Jun</td></tr>
           <tr><td>Apps/Ventas</td><td class="num up">12.8%</td><td class="muted">↑ vs 10.3% sem. ant.</td></tr>
           <tr><td>ARPU</td><td class="num muted">—</td><td class="muted">Pendiente Qlik</td></tr>
           <tr><td>Tráfico (clicks)</td><td class="num muted">—</td><td class="muted">Pendiente Qlik</td></tr>
@@ -399,6 +345,66 @@ code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 10px; backgrou
         </tbody>
       </table>
     </div>
+  </div>
+
+  <!-- 3. ALERTAS ACTIVAS -->
+  <div class="section-title">🚨 Alertas activas</div>
+  <div class="card">
+
+    <div class="alert-item alert-high">
+      <span class="alert-icon">🔴</span>
+      <div class="alert-content">
+        <div class="alert-title"><span class="pill pill-e">EaseGov</span> &nbsp;DS-11 con CR crítico — 1.3%–4.5% en junio</div>
+        <div class="alert-body">DS-11 en EaseGov registra el ratio Apps/Ventas más bajo de todos los productos. El deploy de DS-11 Expedited (28 May) coincide con la caída: de ~4% a 1.3% en la semana 15–21 Jun. TSA PreCheck (16–19%) es el producto que sostiene el global de EaseGov.</div>
+        <div class="alert-meta"><a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank">CR Tracker ↗</a> · semanas 1–28 Jun</div>
+      </div>
+    </div>
+
+    <div class="alert-item alert-high">
+      <span class="alert-icon">🔴</span>
+      <div class="alert-content">
+        <div class="alert-title"><span class="pill pill-p">Passports</span> &nbsp;Apps/Ventas 22–28 Jun: 17.3% — mínimo de las últimas 4 semanas</div>
+        <div class="alert-body">261 ventas sobre 1.512 applications. Step 1 baja a 19.8%. Sin cambio de deploy registrado esa semana — podría estar relacionado con mezcla de tráfico o con el volumen elevado de la semana anterior (506 ventas).</div>
+        <div class="alert-meta"><a href="https://docs.google.com/spreadsheets/d/12ovv5t_YNQfT7O7yK3b9ltTyL-x_fDefhPNvVlO2xMI/edit" target="_blank">CR Tracker ↗</a> · semana 22–28 Jun</div>
+      </div>
+    </div>
+
+    <div class="alert-item alert-high">
+      <span class="alert-icon">🔴</span>
+      <div class="alert-content">
+        <div class="alert-title"><span class="pill pill-both">Global</span> &nbsp;Q2 cerrado al 8.1% del budget de junio — presupuesto Q3 revisado a la baja</div>
+        <div class="alert-body">Cierre Q2: Jun 2.254 ventas vs budget 28.000 (8.1%) · May 3.521 vs budget 20.000 (17.6%). Budget Q3 ajustado a 3.000/mes global. Causas: slip de 7 iniciativas a Q3, baja conversión EaseGov, caída de tráfico en Passports.</div>
+        <div class="alert-meta"><a href="https://docs.google.com/spreadsheets/d/1KFgr1_Sx4yuc1KajLbiHHjogRLc2kPWGFkhlgIaCtfo/edit" target="_blank">Forecast 2026 ↗</a> · roadmap_2026.md</div>
+      </div>
+    </div>
+
+    <div class="alert-item alert-med">
+      <span class="alert-icon">🟡</span>
+      <div class="alert-content">
+        <div class="alert-title"><span class="pill pill-e">EaseGov</span> &nbsp;Apple Pay slip a Q3 — checkout sin método de pago prioritario</div>
+        <div class="alert-body">Apple Pay EaseGov era una iniciativa de Q2 que ha pasado a Q3. En Passports ya está live desde mayo. EaseGov pierde una palanca de conversión en checkout que ya tienen GovPlus y Premier.</div>
+        <div class="alert-meta"><a href="https://drive.google.com/drive/folders/1JB1wMNmJjRraS6XCmHsC2VpexJ7ELXVs" target="_blank">Roadmap Drive ↗</a> · roadmap_2026.md</div>
+      </div>
+    </div>
+
+    <div class="alert-item alert-med">
+      <span class="alert-icon">🟡</span>
+      <div class="alert-content">
+        <div class="alert-title"><span class="pill pill-both">Ambos</span> &nbsp;Refunds y ARPU Jun — pendientes de Qlik</div>
+        <div class="alert-body">Los datos de refunds, chargebacks y ARPU de junio aún no están disponibles en Qlik. Umbral de alerta: refunds &gt;30%, chargebacks &gt;10%. Actualizar en cuanto estén disponibles.</div>
+        <div class="alert-meta"><a href="https://docs.google.com/spreadsheets/d/1KFgr1_Sx4yuc1KajLbiHHjogRLc2kPWGFkhlgIaCtfo/edit" target="_blank">Forecast 2026 ↗</a> · Qlik</div>
+      </div>
+    </div>
+
+    <div class="alert-item alert-low">
+      <span class="alert-icon">🔵</span>
+      <div class="alert-content">
+        <div class="alert-title"><span class="pill pill-both">Mercado</span> &nbsp;State Dept lanza "Patriot Passport" conmemorativo — disponible desde 6 Jul solo en D.C.</div>
+        <div class="alert-body">Edición del 250 aniversario de EEUU. Solo presencial, sin afectar tiempos estándar. Podría generar un pico de búsquedas sobre pasaportes esta semana.</div>
+        <div class="alert-meta"><a href="https://drive.google.com/drive/folders/1GYzjG-4skf_rBfmPDI2qwKIrYMwk8zkS" target="_blank">Radar Drive ↗</a> · easegov-radar-2026-07-04.json</div>
+      </div>
+    </div>
+
   </div>
 
 </div>
