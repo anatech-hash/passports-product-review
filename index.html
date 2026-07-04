@@ -1,350 +1,1026 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Product Brain · Dashboard Q3 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Brain · Passports & EaseGov</title>
 <style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --border: #e8e6e0;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --red: #d93025;
+    --red-bg: #fdf0ef;
+    --yellow: #d97706;
+    --yellow-bg: #fffbeb;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --blue: #2563eb;
+    --blue-bg: #eff6ff;
+    --purple: #7c3aed;
+    --purple-bg: #f5f3ff;
+    --p-color: #1d4ed8;
+    --p-bg: #eff6ff;
+    --e-color: #7c3aed;
+    --e-bg: #f5f3ff;
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; background: #0d1117; color: #e6edf3; padding: 16px; font-size: 13px; }
-  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #21262d; padding-bottom: 12px; }
-  .header h1 { font-size: 16px; color: #f0f6fc; font-weight: 700; }
-  .header .meta { font-size: 11px; color: #8b949e; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-  .badge-green { background: #1a4a1a; color: #56d364; }
-  .badge-red { background: #4a1a1a; color: #f85149; }
-  .badge-yellow { background: #4a3a00; color: #e3b341; }
-  .badge-blue { background: #1a2a4a; color: #79c0ff; }
-  .badge-gray { background: #21262d; color: #8b949e; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 14px; }
-  .card-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #8b949e; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-  .product-tag-p { color: #79c0ff; font-weight: 700; }
-  .product-tag-e { color: #d2a8ff; font-weight: 700; }
-  table { width: 100%; border-collapse: collapse; }
-  th { font-size: 10px; text-transform: uppercase; color: #8b949e; border-bottom: 1px solid #21262d; padding: 4px 6px; text-align: left; font-weight: 600; }
-  td { padding: 5px 6px; border-bottom: 1px solid #161b22; font-size: 12px; }
-  tr:last-child td { border-bottom: none; }
-  .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .kpi-item { background: #0d1117; border: 1px solid #21262d; border-radius: 6px; padding: 8px 10px; }
-  .kpi-label { font-size: 10px; color: #8b949e; margin-bottom: 2px; }
-  .kpi-value { font-size: 18px; font-weight: 700; color: #f0f6fc; }
-  .kpi-delta { font-size: 10px; margin-top: 2px; }
-  .delta-down { color: #f85149; }
-  .delta-up { color: #56d364; }
-  .delta-warn { color: #e3b341; }
-  .alert-list { list-style: none; }
-  .alert-list li { padding: 6px 8px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; display: flex; align-items: flex-start; gap: 8px; }
-  .alert-red { background: #2d0f0f; border-left: 3px solid #f85149; }
-  .alert-yellow { background: #2d1f00; border-left: 3px solid #e3b341; }
-  .alert-blue { background: #0d1f3c; border-left: 3px solid #79c0ff; }
-  .roadmap-row { display: flex; gap: 6px; }
-  .roadmap-col { flex: 1; }
-  .roadmap-col-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; text-align: center; padding: 3px; border-bottom: 2px solid; }
-  .live-title { border-color: #56d364; color: #56d364; }
-  .build-title { border-color: #e3b341; color: #e3b341; }
-  .next-title { border-color: #79c0ff; color: #79c0ff; }
-  .roadmap-item { background: #0d1117; border: 1px solid #21262d; border-radius: 5px; padding: 6px 8px; margin-bottom: 5px; font-size: 11px; line-height: 1.4; }
-  .roadmap-item .ri-label { color: #8b949e; font-size: 10px; }
-  .opp-item { background: #0d1117; border: 1px solid #21262d; border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; display: flex; gap: 10px; align-items: flex-start; }
-  .opp-num { font-size: 28px; font-weight: 700; flex-shrink: 0; width: 32px; text-align: center; }
-  .opp-title { font-size: 12px; font-weight: 600; color: #f0f6fc; margin-bottom: 2px; }
-  .opp-desc { font-size: 11px; color: #8b949e; line-height: 1.4; }
-  .opp-nsm { font-size: 10px; margin-top: 4px; }
-  .intel-item { border-left: 3px solid #30363d; padding: 4px 8px; margin-bottom: 8px; font-size: 12px; }
-  .intel-source { font-size: 10px; color: #8b949e; }
-  .tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-  .tab { padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; border: 1px solid #21262d; background: #161b22; color: #8b949e; }
-  .tab.active-p { background: #1a2a4a; color: #79c0ff; border-color: #79c0ff; }
-  .tab.active-e { background: #2a1a4a; color: #d2a8ff; border-color: #d2a8ff; }
-  .tab.active-both { background: #1a3a2a; color: #56d364; border-color: #56d364; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .header-logo {
+    width: 32px; height: 32px;
+    background: var(--text);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .header-title { font-size: 15px; font-weight: 600; }
+  .header-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .header-right { display: flex; align-items: center; gap: 8px; }
+  .sync-badge {
+    background: var(--green-bg);
+    color: var(--green);
+    border: 1px solid #bbf7d0;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .date-badge {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* TABS */
+  .tabs-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+  }
+  .tab-btn {
+    padding: 12px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+  .tab-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* CONTENT */
+  .content { padding: 24px; max-width: 1200px; margin: 0 auto; }
   .pane { display: none; }
   .pane.active { display: block; }
-  .ticket-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
-  .ticket-bar-label { font-size: 11px; color: #8b949e; min-width: 100px; }
-  .ticket-bar-track { flex: 1; background: #21262d; border-radius: 3px; height: 10px; overflow: hidden; }
-  .ticket-bar-fill { height: 100%; border-radius: 3px; }
-  .ticket-bar-count { font-size: 11px; font-weight: 700; min-width: 30px; text-align: right; }
-  .gap-warning { background: #2d1f00; border: 1px dashed #e3b341; border-radius: 6px; padding: 8px 10px; font-size: 11px; color: #e3b341; margin-bottom: 8px; }
-  .gap-warning strong { display: block; margin-bottom: 2px; }
-  .full-width { grid-column: 1 / -1; }
-  .data-source { font-size: 10px; color: #30363d; text-align: right; margin-top: 8px; }
-  code { background: #21262d; padding: 1px 4px; border-radius: 3px; font-family: monospace; font-size: 10px; }
+
+  /* SECTION TITLE */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card + .card { margin-top: 12px; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+  .span-2 { grid-column: span 2; }
+
+  /* PRODUCT PILL */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .pill-p { background: var(--p-bg); color: var(--p-color); }
+  .pill-e { background: var(--e-bg); color: var(--e-color); }
+  .pill-both { background: #f1f5f9; color: #475569; }
+
+  /* KPI BLOCK */
+  .kpi-block { }
+  .kpi-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .kpi-value { font-size: 28px; font-weight: 700; line-height: 1; color: var(--text); }
+  .kpi-value.red { color: var(--red); }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.yellow { color: var(--yellow); }
+  .kpi-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* ALERT */
+  .alert {
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+  }
+  .alert:last-child { margin-bottom: 0; }
+  .alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .alert-title { font-weight: 600; margin-bottom: 2px; }
+  .alert-body { color: #374151; }
+  .alert-source { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .alert.red { background: var(--red-bg); border-left: 3px solid var(--red); }
+  .alert.yellow { background: var(--yellow-bg); border-left: 3px solid var(--yellow); }
+  .alert.blue { background: var(--blue-bg); border-left: 3px solid var(--blue); }
+  .alert.green { background: var(--green-bg); border-left: 3px solid var(--green); }
+  .alert.gray { background: #f8fafc; border-left: 3px solid #94a3b8; }
+
+  /* STATUS BADGE */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .status.red { background: var(--red-bg); color: var(--red); }
+  .status.yellow { background: var(--yellow-bg); color: var(--yellow); }
+  .status.green { background: var(--green-bg); color: var(--green); }
+  .status.blue { background: var(--blue-bg); color: var(--blue); }
+  .status.gray { background: #f1f5f9; color: #64748b; }
+
+  /* TABLE */
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: #fafafa; }
+
+  /* BAR CHART */
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+  }
+  .bar-label { font-size: 13px; color: var(--text); min-width: 130px; }
+  .bar-track {
+    flex: 1;
+    background: #f1f5f9;
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .bar-count { font-size: 13px; font-weight: 600; min-width: 36px; text-align: right; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* ROADMAP */
+  .roadmap-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .roadmap-col-head {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .rh-live { background: var(--green-bg); color: var(--green); }
+  .rh-build { background: var(--yellow-bg); color: var(--yellow); }
+  .rh-next { background: var(--blue-bg); color: var(--blue); }
+  .roadmap-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .roadmap-item .ri-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  /* OPP */
+  .opp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .opp-num-wrap {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .opp-num-1 { background: var(--red-bg); color: var(--red); }
+  .opp-num-2 { background: var(--yellow-bg); color: var(--yellow); }
+  .opp-num-3 { background: var(--blue-bg); color: var(--blue); }
+  .opp-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .opp-desc { font-size: 13px; color: #374151; line-height: 1.6; margin-bottom: 10px; }
+  .opp-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .opp-tag {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .opp-tag.impact-high { background: var(--red-bg); color: var(--red); }
+  .opp-tag.impact-med { background: var(--yellow-bg); color: var(--yellow); }
+  .opp-tag.effort-low { background: var(--green-bg); color: var(--green); }
+  .opp-tag.effort-med { background: #f1f5f9; color: #475569; }
+
+  /* SOURCE NOTE */
+  .source-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* INTEL ITEM */
+  .intel-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .intel-item:last-child { border-bottom: none; }
+  .intel-title { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  .intel-body { font-size: 13px; color: #374151; line-height: 1.5; }
+  .intel-meta { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* GAP WARNING */
+  .gap-banner {
+    background: var(--yellow-bg);
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #92400e;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  /* COMPETITOR TABLE HIGHLIGHT */
+  .us-row td { background: #eff6ff !important; font-weight: 600; }
+
+  code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px;
+    background: #f1f5f9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: #1e40af;
+  }
+
+  .mb-16 { margin-bottom: 16px; }
+  .mb-20 { margin-bottom: 20px; }
+  .mt-16 { margin-top: 16px; }
+
+  @media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4, .roadmap-grid { grid-template-columns: 1fr; }
+    .span-2 { grid-column: span 1; }
+    .content { padding: 16px; }
+    .tabs-bar { overflow-x: auto; }
+  }
 </style>
 </head>
 <body>
+
+<!-- HEADER -->
 <div class="header">
-  <div>
-    <h1>🧠 Product Brain · Dashboard Sincronizado</h1>
-    <div class="meta">Passports (mypassporthub.com) &amp; EaseGov (easegov.com) · 4 Jul 2026</div>
+  <div class="header-left">
+    <div class="header-logo">🧠</div>
+    <div>
+      <div class="header-title">Product Brain · Passports & EaseGov</div>
+      <div class="header-sub">mypassporthub.com · easegov.com</div>
+    </div>
   </div>
-  <div><span class="badge badge-green">Sincronizado</span> <span class="badge badge-gray" style="margin-left:6px;">Drive + Tickets Mayo 2026</span></div>
+  <div class="header-right">
+    <span class="sync-badge">✓ Sincronizado</span>
+    <span class="date-badge">4 Jul 2026</span>
+  </div>
 </div>
 
-<div class="tabs">
-  <button class="tab active-both" onclick="showTab('overview',this,'active-both')">🌐 Overview</button>
-  <button class="tab" onclick="showTab('passports',this,'active-p')">🛂 Passports</button>
-  <button class="tab" onclick="showTab('easegov',this,'active-e')">🏛️ EaseGov</button>
-  <button class="tab" onclick="showTab('intel',this,'active-p')">🔭 Intel &amp; Radar</button>
-  <button class="tab" onclick="showTab('opp',this,'active-both')">🎯 Oportunidades</button>
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="showTab('overview', this)">
+    <span>Resumen</span>
+  </button>
+  <button class="tab-btn" onclick="showTab('passports', this)">
+    <span class="tab-dot" style="background:#2563eb"></span>
+    Passports
+  </button>
+  <button class="tab-btn" onclick="showTab('easegov', this)">
+    <span class="tab-dot" style="background:#7c3aed"></span>
+    EaseGov
+  </button>
+  <button class="tab-btn" onclick="showTab('intel', this)">
+    Mercado & Radar
+  </button>
+  <button class="tab-btn" onclick="showTab('opp', this)">
+    Oportunidades
+  </button>
 </div>
 
-<!-- OVERVIEW -->
+<div class="content">
+
+<!-- ═══════════════════════════════════════════ RESUMEN ═══ -->
 <div id="pane-overview" class="pane active">
-  <div class="gap-warning">
-    <strong>⚠️ GAPS DE SINCRONIZACIÓN DETECTADOS EN DRIVE</strong>
-    Carpetas vacías: <code>03_metricas_arbol_de_kpis/</code> · <code>03_metricas/roadmap/</code> · <code>04_mercado/competitive Intelligence/Passports/</code> · <code>07_Feedback/Passports/</code> · <code>07_Feedback/EaseGov/</code>. Datos construidos desde: project knowledge (docx), tickets Mayo 2026, radar EaseGov Drive (activo) y contexto de memoria.
+
+  <!-- ALERTAS -->
+  <div class="section-label mb-16">Alertas activas</div>
+
+  <div class="alert red">
+    <span class="alert-icon">⚠️</span>
+    <div>
+      <div class="alert-title">Passports — Tráfico colapsado (−93% YoY)</div>
+      <div class="alert-body">MPH pasó de 461k a 31k clicks entre Mar 2025 y Mar 2026. El CR del funnel se recupera parcialmente (5.7% sem.18 May) pero la base de usuarios es mínima. Causas: desactivación AMEX/Capital One, subida de precios y competidor mypassportcenter.</div>
+      <div class="alert-source">Fuente: estado_actual.docx · QlikSense</div>
+    </div>
   </div>
+
+  <div class="alert red">
+    <span class="alert-icon">⚠️</span>
+    <div>
+      <div class="alert-title">EaseGov — Drop crítico en /processing-method desde 28 May</div>
+      <div class="alert-body">El deploy de DS-11 Expedited coincide con una caída severa de conversión en ese paso. Afecta todos los dispositivos. Cada usuario que abandona ahí no llega al pago.</div>
+      <div class="alert-source">Fuente: Amplitude_análisis_comportamiento_EaseGov_21_27_Mayo.md</div>
+    </div>
+  </div>
+
+  <div class="alert red">
+    <span class="alert-icon">⚠️</span>
+    <div>
+      <div class="alert-title">EaseGov — 55% de refunds en Mayo (186 de 336 tickets)</div>
+      <div class="alert-body">El motivo dominante: 141 usuarios (42% del total) creían estar en el sitio oficial del gobierno. Nivel crítico para retención y NSM.</div>
+      <div class="alert-source">Fuente: Tickets_Soporte_EaseGov_y_Sites_Passports_Mayo_2026.xlsx</div>
+    </div>
+  </div>
+
+  <div class="alert yellow">
+    <span class="alert-icon">◆</span>
+    <div>
+      <div class="alert-title">Passports — 42 tickets de "link expirado" en Mayo</div>
+      <div class="alert-body">Fricción post-compra recurrente. Podría estar relacionada con usuarios que abandonan el proceso antes de enviar el formulario físico al gobierno.</div>
+      <div class="alert-source">Fuente: Tickets_Soporte_EaseGov_y_Sites_Passports_Mayo_2026.xlsx</div>
+    </div>
+  </div>
+
+  <div class="alert yellow">
+    <span class="alert-icon">◆</span>
+    <div>
+      <div class="alert-title">Passports Mobile Google — CR estructuralmente bajo</div>
+      <div class="alert-body">Podría estar relacionado con una campaña SEM nueva que atrae tráfico de baja intención. Requiere baseline limpio antes de lanzar cualquier A/B test.</div>
+      <div class="alert-source">Fuente: estado_actual.docx · memoria sesiones anteriores</div>
+    </div>
+  </div>
+
+  <div class="alert blue">
+    <span class="alert-icon">ℹ</span>
+    <div>
+      <div class="alert-title">State Dept lanza "Patriot Passport" (desde 6 Jul, solo en Washington D.C.)</div>
+      <div class="alert-body">Edición conmemorativa del 250 aniversario de EEUU. No afecta tiempos estándar. Disponible solo en persona en D.C. y mientras haya existencias. Podría generar búsquedas informativas sobre pasaportes.</div>
+      <div class="alert-source">Fuente: easegov-radar-2026-07-04.json · Drive</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- NSM SNAPSHOT -->
+  <div class="section-label mb-16">North Star Metrics — estado actual</div>
   <div class="grid-2">
+
     <div class="card">
-      <div class="card-title"><span class="product-tag-p">PASSPORTS</span> NSM — Aplicaciones completadas/semana sin refund ni CB</div>
-      <div class="kpi-grid">
-        <div class="kpi-item"><div class="kpi-label">CR end-to-end MPH</div><div class="kpi-value">5.7%</div><div class="kpi-delta delta-warn">Baseline sem.18 May · fue 1.9% en Mar26</div></div>
-        <div class="kpi-item"><div class="kpi-label">Tráfico MPH YoY</div><div class="kpi-value">−93%</div><div class="kpi-delta delta-down">461k → 31k (Mar25→Mar26)</div></div>
-        <div class="kpi-item"><div class="kpi-label">Refunds Mayo</div><div class="kpi-value">181</div><div class="kpi-delta delta-warn">43% total tickets Passports</div></div>
-        <div class="kpi-item"><div class="kpi-label">ARPU ref.</div><div class="kpi-value">~136€</div><div class="kpi-delta">Dic 2025 · alerta &lt;120€</div></div>
+      <div class="pill pill-p">Passports</div>
+      <div class="kpi-label">NSM — Aplicaciones completadas sin refund ni chargeback / semana</div>
+      <hr class="divider">
+      <div class="grid-2">
+        <div class="kpi-block">
+          <div class="kpi-label">CR end-to-end MPH</div>
+          <div class="kpi-value yellow">5.7%</div>
+          <div class="kpi-sub">Baseline sem.18 May · fue 1.9% en Mar 2026</div>
+        </div>
+        <div class="kpi-block">
+          <div class="kpi-label">Caída de tráfico YoY</div>
+          <div class="kpi-value red">−93%</div>
+          <div class="kpi-sub">461k → 31k clicks (Mar25 → Mar26)</div>
+        </div>
+        <div class="kpi-block">
+          <div class="kpi-label">Refunds Mayo</div>
+          <div class="kpi-value yellow">181</div>
+          <div class="kpi-sub">43% del total de tickets</div>
+        </div>
+        <div class="kpi-block">
+          <div class="kpi-label">ARPU referencia</div>
+          <div class="kpi-value">~136€</div>
+          <div class="kpi-sub">Dic 2025 · alerta si baja de 120€</div>
+        </div>
       </div>
     </div>
+
     <div class="card">
-      <div class="card-title"><span class="product-tag-e">EASEGOV</span> NSM — Usuarios Premium con ≥1 servicio completo / 30 días</div>
-      <div class="kpi-grid">
-        <div class="kpi-item"><div class="kpi-label">Refunds Mayo</div><div class="kpi-value">186</div><div class="kpi-delta delta-down">55% total tickets · nivel crítico</div></div>
-        <div class="kpi-item"><div class="kpi-label">Confusión gov/priv.</div><div class="kpi-value">141</div><div class="kpi-delta delta-down">42% tickets EaseGov Mayo</div></div>
-        <div class="kpi-item"><div class="kpi-label">Drop crítico</div><div class="kpi-value">/processing</div><div class="kpi-delta delta-warn">Deploy 28 May · DS-11 Expedited</div></div>
-        <div class="kpi-item"><div class="kpi-label">Estado MVP</div><div class="kpi-value">Live</div><div class="kpi-delta delta-up">Lanzado Mar 2026 · 4 servicios</div></div>
+      <div class="pill pill-e">EaseGov</div>
+      <div class="kpi-label">NSM — Usuarios premium con ≥1 servicio completado / 30 días</div>
+      <hr class="divider">
+      <div class="grid-2">
+        <div class="kpi-block">
+          <div class="kpi-label">Refunds Mayo</div>
+          <div class="kpi-value red">186</div>
+          <div class="kpi-sub">55% del total · nivel crítico</div>
+        </div>
+        <div class="kpi-block">
+          <div class="kpi-label">Confusión gov/privado</div>
+          <div class="kpi-value red">141</div>
+          <div class="kpi-sub">42% de todos los tickets EaseGov</div>
+        </div>
+        <div class="kpi-block">
+          <div class="kpi-label">Drop crítico en</div>
+          <div class="kpi-value yellow" style="font-size:18px">/processing</div>
+          <div class="kpi-sub">Desde deploy 28 May · DS-11 Expedited</div>
+        </div>
+        <div class="kpi-block">
+          <div class="kpi-label">Estado MVP</div>
+          <div class="kpi-value green" style="font-size:20px">Live</div>
+          <div class="kpi-sub">Lanzado Mar 2026 · 4 servicios activos</div>
+        </div>
       </div>
     </div>
+
   </div>
-  <div class="card">
-    <div class="card-title">🚨 ALERTAS ACTIVAS — Ambos productos</div>
-    <ul class="alert-list">
-      <li class="alert-red">🔴 <div><strong>Passports:</strong> Caída tráfico −93% YoY en MPH. CR funnel parcialmente recuperado (5.7% sem.18 May) pero base es mínima. Causas: desactivación AMEX/Capital One + competidor mypassportcenter + subida precios.</div></li>
-      <li class="alert-red">🔴 <div><strong>EaseGov:</strong> Drop severo en <code>/processing-method</code> desde deploy 28 May (DS-11 Expedited). Afecta todos los dispositivos. Riesgo de impacto en NSM.</div></li>
-      <li class="alert-red">🔴 <div><strong>EaseGov:</strong> 141 tickets confusión gobierno/privado en Mayo (42% total). Tasa refund 55% — nivel crítico para retención y NSM.</div></li>
-      <li class="alert-yellow">🟡 <div><strong>Passports:</strong> 42 tickets "link expirado". Fricción post-compra recurrente que podría relacionarse con abandono antes de enviar formulario.</div></li>
-      <li class="alert-yellow">🟡 <div><strong>Passports Mobile Google:</strong> CR mobile estructuralmente débil. Podría estar relacionado con nueva campaña SEM (baja intención). Requiere baseline limpio antes de A/B test.</div></li>
-      <li class="alert-blue">🔵 <div><strong>Externo:</strong> State Dept lanzó "Patriot Passport" (250 aniv. EEUU) desde 6 Jul, solo presencial en D.C. No afecta tiempos estándar. Podría generar búsquedas informativas.</div></li>
-    </ul>
-  </div>
+
 </div>
 
-<!-- PASSPORTS -->
+<!-- ═══════════════════════════════════════════ PASSPORTS ═══ -->
 <div id="pane-passports" class="pane">
-  <div class="grid-2">
+
+  <div class="section-label mb-16">Conversión por site — Baseline semana 18 May 2026</div>
+  <div class="card mb-20">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Site</th>
+          <th>CR Step 1</th>
+          <th>CR end-to-end</th>
+          <th>CR Review → Pago</th>
+          <th>CR Pago → Gracias</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>mypassporthub.com</strong></td>
+          <td>25.2%</td>
+          <td>5.7%</td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="status yellow">⚠ Por debajo de target</span></td>
+        </tr>
+        <tr>
+          <td>primeusaprocessors.com</td>
+          <td>29.1%</td>
+          <td>4.7%</td>
+          <td>73.1%</td>
+          <td>26.9%</td>
+          <td><span class="status yellow">⚠ Por debajo de target</span></td>
+        </tr>
+        <tr>
+          <td>trustedtravelportal.com</td>
+          <td>34.3%</td>
+          <td>7.8%</td>
+          <td>72.4%</td>
+          <td>38.1%</td>
+          <td><span class="status green">✓ En rango</span></td>
+        </tr>
+        <tr>
+          <td>cleartripservices.com</td>
+          <td>33.2%</td>
+          <td>7.4%</td>
+          <td>76.4%</td>
+          <td>36.9%</td>
+          <td><span class="status green">✓ En rango</span></td>
+        </tr>
+        <tr style="background:#eff6ff; font-weight:600;">
+          <td style="color:#2563eb">Target</td>
+          <td style="color:#2563eb">&gt;35% todos</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="source-note">📂 Fuente: estado_actual.docx · QlikSense</div>
+  </div>
+
+  <div class="section-label mb-16">Google vs Bing — Acumulado Mar 2025 – Mar 2026</div>
+  <div class="grid-2 mb-20">
     <div class="card">
-      <div class="card-title"><span class="product-tag-p">PASSPORTS</span> KPIs por site (Baseline sem.18 May 2026)</div>
-      <table>
-        <thead><tr><th>Site</th><th>CR Step1</th><th>CR E2E</th><th>CR Rev→Pay</th><th>CR Pay→TY</th><th>Estado</th></tr></thead>
+      <table class="data-table">
+        <thead>
+          <tr><th>Paso del funnel</th><th>Google</th><th>Bing</th></tr>
+        </thead>
         <tbody>
-          <tr><td>mypassporthub.com</td><td>25.2%</td><td>5.7%</td><td>—</td><td>—</td><td><span class="badge badge-yellow">⚠️ Bajo</span></td></tr>
-          <tr><td>primeusaprocessors</td><td>29.1%</td><td>4.7%</td><td>73.1%</td><td>26.9%</td><td><span class="badge badge-yellow">⚠️</span></td></tr>
-          <tr><td>trustedtravelportal</td><td>34.3%</td><td>7.8%</td><td>72.4%</td><td>38.1%</td><td><span class="badge badge-green">✓</span></td></tr>
-          <tr><td>cleartripservices</td><td>33.2%</td><td>7.4%</td><td>76.4%</td><td>36.9%</td><td><span class="badge badge-green">✓</span></td></tr>
-          <tr><td style="color:#79c0ff;font-weight:700">Target</td><td style="color:#79c0ff">&gt;35%</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-        </tbody>
-      </table>
-      <div class="data-source">Fuente: QlikSense / estado_actual.docx</div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="product-tag-p">PASSPORTS</span> Google vs Bing (acum. Mar25–Mar26)</div>
-      <table>
-        <thead><tr><th>Paso</th><th>Google</th><th>Bing</th></tr></thead>
-        <tbody>
-          <tr><td>Step 1</td><td>654.837</td><td>454.323</td></tr>
+          <tr><td>Step 1 (entrada)</td><td>654.837</td><td>454.323</td></tr>
           <tr><td>Contacto</td><td>28.2%</td><td>40.6%</td></tr>
           <tr><td>Review</td><td>21.1%</td><td>31.7%</td></tr>
-          <tr><td>Payment</td><td>16.7%</td><td>24.7%</td></tr>
-          <tr><td><strong>CR Total</strong></td><td><strong style="color:#f85149">6.19%</strong></td><td><strong style="color:#56d364">9.91%</strong></td></tr>
+          <tr><td>Pago</td><td>16.7%</td><td>24.7%</td></tr>
+          <tr>
+            <td><strong>CR Total</strong></td>
+            <td><strong style="color:var(--red)">6.19%</strong></td>
+            <td><strong style="color:var(--green)">9.91%</strong></td>
+          </tr>
         </tbody>
       </table>
-      <div style="font-size:11px; color:#e3b341; margin-top:8px;">⚡ Bing convierte ~60% más. Google = volumen mayor, intención menor.</div>
+      <div class="source-note">📂 Fuente: estado_actual.docx · Amplitude EU</div>
     </div>
-    <div class="card full-width">
-      <div class="card-title"><span class="product-tag-p">PASSPORTS</span> Tickets soporte Mayo 2026 (420 total)</div>
-      <div style="margin-bottom:12px;">
-        <div class="ticket-bar"><span class="ticket-bar-label">Refund</span><div class="ticket-bar-track"><div class="ticket-bar-fill" style="width:43%; background:#f85149;"></div></div><span class="ticket-bar-count" style="color:#f85149">181</span></div>
-        <div class="ticket-bar"><span class="ticket-bar-label">Preg. Generales</span><div class="ticket-bar-track"><div class="ticket-bar-fill" style="width:33%; background:#79c0ff;"></div></div><span class="ticket-bar-count" style="color:#79c0ff">137</span></div>
-        <div class="ticket-bar"><span class="ticket-bar-label">Technical Issue</span><div class="ticket-bar-track"><div class="ticket-bar-fill" style="width:13%; background:#e3b341;"></div></div><span class="ticket-bar-count" style="color:#e3b341">54</span></div>
-        <div class="ticket-bar"><span class="ticket-bar-label">Corrections</span><div class="ticket-bar-track"><div class="ticket-bar-fill" style="width:11%; background:#8b949e;"></div></div><span class="ticket-bar-count" style="color:#8b949e">45</span></div>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center;gap:12px;">
+      <div class="alert green" style="margin:0">
+        <span class="alert-icon">↑</span>
+        <div><strong>Bing convierte un 60% más que Google.</strong><br>Google trae más volumen pero usuarios de menor intención de compra.</div>
       </div>
-      <div style="font-size:11px; color:#8b949e;"><strong style="color:#e3b341;">Top señales:</strong> 42 tickets "link expirado" (fricción post-compra) · 27 tickets confusión gov/privado · Preguntas recurrentes sobre envío postal y tiempos del gobierno.</div>
-    </div>
-  </div>
-</div>
-
-<!-- EASEGOV -->
-<div id="pane-easegov" class="pane">
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-title"><span class="product-tag-e">EASEGOV</span> Tickets Mayo 2026 (336 total)</div>
-      <div style="margin-bottom:10px;">
-        <div class="ticket-bar"><span class="ticket-bar-label">Refund</span><div class="ticket-bar-track"><div class="ticket-bar-fill" style="width:55%; background:#f85149;"></div></div><span class="ticket-bar-count" style="color:#f85149">186</span></div>
-        <div class="ticket-bar"><span class="ticket-bar-label">Preg. Generales</span><div class="ticket-bar-track"><div class="ticket-bar-fill" style="width:39%; background:#79c0ff;"></div></div><span class="ticket-bar-count" style="color:#79c0ff">130</span></div>
-        <div class="ticket-bar"><span class="ticket-bar-label">Corrections</span><div class="ticket-bar-track"><div class="ticket-bar-fill" style="width:3%; background:#8b949e;"></div></div><span class="ticket-bar-count" style="color:#8b949e">11</span></div>
-        <div class="ticket-bar"><span class="ticket-bar-label">Technical Issue</span><div class="ticket-bar-track"><div class="ticket-bar-fill" style="width:1.5%; background:#e3b341;"></div></div><span class="ticket-bar-count" style="color:#e3b341">5</span></div>
-      </div>
-      <div style="font-size:11px; color:#f85149;"><strong>⚠️ 55% refunds</strong> — ratio muy alto para MVP en primeros meses.</div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="product-tag-e">EASEGOV</span> Patrones cualitativos en tickets</div>
-      <table>
-        <thead><tr><th>Patrón</th><th>N</th><th>%</th></tr></thead>
-        <tbody>
-          <tr><td>"Pensaba que era el gobierno"</td><td style="color:#f85149;font-weight:700">141</td><td>42%</td></tr>
-          <tr><td>Preguntas sobre citas TSA</td><td>~15</td><td>~4%</td></tr>
-          <tr><td>Expectativa "TSA = pass inmediato"</td><td>~20</td><td>~6%</td></tr>
-          <tr><td>Cobro duplicado</td><td>~3</td><td>&lt;1%</td></tr>
-          <tr><td>Link / proceso no funciona</td><td>7</td><td>2%</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card full-width">
-      <div class="card-title"><span class="product-tag-e">EASEGOV</span> Estado funnel (Amplitude 21–27 May 2026)</div>
-      <div class="gap-warning" style="margin-bottom:10px;"><strong>🔴 Drop crítico en /processing-method (deploy 28 May)</strong>DS-11 Expedited coincide con caída severa en ese paso. Afecta todos los dispositivos. P0.</div>
-      <table>
-        <thead><tr><th>Paso funnel</th><th>Estado</th><th>Acción</th></tr></thead>
-        <tbody>
-          <tr><td>get_started → registro</td><td><span class="badge badge-green">Estable</span></td><td>Monitor</td></tr>
-          <tr><td>registro → selección servicio</td><td><span class="badge badge-green">Estable</span></td><td>Monitor</td></tr>
-          <tr><td><strong>/processing-method</strong></td><td><span class="badge badge-red">Drop crítico</span></td><td><strong>P0 · Hotfix o rollback parcial</strong></td></tr>
-          <tr><td>processing → checkout</td><td><span class="badge badge-yellow">Afectado</span></td><td>Derivado</td></tr>
-          <tr><td>checkout → pago</td><td><span class="badge badge-yellow">Sin baseline limpio</span></td><td>Pendiente estabilización</td></tr>
-        </tbody>
-      </table>
-      <div style="font-size:11px; color:#8b949e; margin-top:8px;">NSM EaseGov sin baseline formal. Pendiente redefinición Q3. Apple Pay (PASGF-740) en tracker.</div>
-    </div>
-  </div>
-</div>
-
-<!-- INTEL -->
-<div id="pane-intel" class="pane">
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-title">🔭 Competitive Intel — Passports (May 2026)</div>
-      <div style="font-size:11px; margin-bottom:8px; color:#e3b341;">⚡ 2 motores white-label detectados — 5 sitios distintos son 2 operaciones. 12 competidores monitoreados.</div>
-      <table>
-        <thead><tr><th>Competidor</th><th>Entrada</th><th>Popular</th><th>Ventaja clave</th></tr></thead>
-        <tbody>
-          <tr><td>RushMyPassport</td><td>$119</td><td>$299 (7-9d)⭐</td><td>FedEx badge, 5 tiers</td></tr>
-          <tr><td>Premier / GOV+</td><td>$97</td><td>$297 tachado</td><td>Apple Pay, precios tachados</td></tr>
-          <tr><td>IVS</td><td>$119</td><td>$169 "Best Pop."</td><td>Tier intermedio gap fill</td></tr>
-          <tr><td>HelloGov</td><td>$197 Smart</td><td>$399 (6-10d)</td><td>Add-on "Recommended"</td></tr>
-          <tr><td style="color:#79c0ff;font-weight:700">MPH (nosotros)</td><td>$119</td><td>$299 (4sem)</td><td>—</td></tr>
-        </tbody>
-      </table>
-      <div style="font-size:11px; color:#f85149; margin-top:8px;">🔴 HelloGov Smart $197 (2-3sem) vs MPH Smart $299 (4sem). A precio similar, ellos entregan antes. Quick win: precios tachados como Premier.</div>
-    </div>
-    <div class="card">
-      <div class="card-title">📡 Radar EaseGov — Semana 4 Jul 2026</div>
-      <div class="intel-item" style="border-color:#79c0ff;">
-        <strong style="color:#79c0ff;">State Dept: "Patriot Passport" (2 Jul 2026)</strong>
-        <div>Edición conmemorativa 250 aniv. Solo presencial D.C. desde 6 Jul. No afecta tiempos estándar. Podría generar búsquedas relacionadas con pasaportes.</div>
-        <div class="intel-source">U.S. Dept. of State</div>
-      </div>
-      <div class="intel-item" style="border-color:#56d364;">
-        <strong style="color:#56d364;">SSA: Tiempos mínimos históricos (29 Jun 2026)</strong>
-        <div>385M transacciones online (+37%). Esperas en oficinas −30%. Podría reducir la percepción de urgencia de usar EaseGov como acelerador del proceso.</div>
-        <div class="intel-source">Social Security Administration</div>
-      </div>
-      <div class="intel-item" style="border-color:#56d364;">
-        <strong style="color:#56d364;">SSA: SS Cards conmemorativas neonatos (1 Jul 2026)</strong>
-        <div>Automático Jul–Dic 2026 a través de hospitales. Sin aplicación adicional. No genera demanda extra pero podría causar confusión.</div>
-        <div class="intel-source">Social Security Administration</div>
-      </div>
-      <div class="intel-item" style="border-color:#e3b341;">
-        <strong style="color:#e3b341;">TSA + Google Wallet: PreCheck Touchless ID (24 Jun 2026)</strong>
-        <div>Verificación biométrica sin ID físico. EaseGov debe monitorear impacto en propuesta de valor del proceso guiado.</div>
-        <div class="intel-source">Transportation Security Administration</div>
-      </div>
-      <div class="intel-item" style="border-color:#f85149;">
-        <strong style="color:#f85149;">FTC: $3.5B imposter scams en 2025 (15 Jun 2026)</strong>
-        <div>Government impersonators = $920M. Contexto: los 141 tickets de confusión gov/privado en EaseGov Mayo coinciden con este patrón. Urgencia de claridad comunicativa.</div>
-        <div class="intel-source">Federal Trade Commission</div>
-      </div>
-    </div>
-    <div class="card full-width">
-      <div class="card-title">📂 Estado sincronización Drive — Carpetas requeridas</div>
-      <table>
-        <thead><tr><th>Carpeta</th><th>Producto</th><th>Estado</th><th>Archivo más reciente</th></tr></thead>
-        <tbody>
-          <tr><td><code>03_metricas_arbol_de_kpis/</code></td><td>Passports</td><td><span class="badge badge-red">⚠️ Vacía</span></td><td>—</td></tr>
-          <tr><td><code>03_metricas_arbol_de_kpis/</code></td><td>EaseGov</td><td><span class="badge badge-red">⚠️ Vacía</span></td><td>—</td></tr>
-          <tr><td><code>03_metricas/roadmap/</code></td><td>Ambos</td><td><span class="badge badge-red">⚠️ Vacía</span></td><td>Solo shortcut a FORECAST 2026</td></tr>
-          <tr><td><code>04_mercado/CI/Passports/</code></td><td>Passports</td><td><span class="badge badge-red">⚠️ Vacía</span></td><td>—</td></tr>
-          <tr><td><code>04_mercado/CI/EaseGov/</code></td><td>EaseGov</td><td><span class="badge badge-red">⚠️ Vacía</span></td><td>—</td></tr>
-          <tr><td><code>07_Feedback/Passports/</code></td><td>Passports</td><td><span class="badge badge-red">⚠️ Vacía</span></td><td>—</td></tr>
-          <tr><td><code>07_Feedback/EaseGov/</code></td><td>EaseGov</td><td><span class="badge badge-red">⚠️ Vacía</span></td><td>—</td></tr>
-          <tr><td><code>EaseGov: Radar News/</code></td><td>EaseGov</td><td><span class="badge badge-green">✓ Activa</span></td><td>easegov-radar-2026-07-04.json</td></tr>
-          <tr><td>Project Knowledge (proxy)</td><td>Ambos</td><td><span class="badge badge-green">✓ Leído</span></td><td>arbol_de_kpis, estado_actual, competidores, tickets</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- OPORTUNIDADES -->
-<div id="pane-opp" class="pane">
-  <div class="card" style="margin-bottom:12px;">
-    <div class="card-title">🎯 TOP 3 OPORTUNIDADES · Priorizadas por impacto en NSM</div>
-    <div class="opp-item">
-      <div class="opp-num" style="color:#f85149;">1</div>
-      <div>
-        <div class="opp-title">🔴 Fix regresión /processing-method (EaseGov) — P0</div>
-        <div class="opp-desc">El deploy del 28 May introdujo una regresión en /processing-method que afecta todos los dispositivos. Cada usuario que abandona ahí nunca llega al pago — impacto directo en NSM. Podría estar relacionado con la complejidad de la nueva pantalla DS-11 Expedited. Requiere Clarity + Amplitude + Desi/Alexander para diagnóstico.</div>
-        <div class="opp-nsm"><span class="badge badge-red">NSM EaseGov: ALTO · Inmediato</span> <span class="badge badge-yellow" style="margin-left:4px;">Esfuerzo: Medio (hotfix / rollback parcial)</span></div>
-      </div>
-    </div>
-    <div class="opp-item">
-      <div class="opp-num" style="color:#e3b341;">2</div>
-      <div>
-        <div class="opp-title">🟡 Claridad propuesta de valor EaseGov (reducir refunds por confusión)</div>
-        <div class="opp-desc">141 tickets (42% total) son usuarios que creían estar en el sitio oficial del gobierno. Esta tasa coincide con el entorno de imposter scams identificado por la FTC ($3.5B en 2025). Reducir la confusión no solo baja la tasa de refund (55% actual) sino que mejora directamente el NSM (usuarios que completan sin refund). Palancas: onboarding más explícito sobre naturaleza privada del servicio + propuesta de valor del "servicio de asistencia" clara antes del pago.</div>
-        <div class="opp-nsm"><span class="badge badge-yellow">NSM EaseGov: ALTO · Retención</span> <span class="badge badge-green" style="margin-left:4px;">Esfuerzo: Bajo-Medio (copy + UX onboarding)</span></div>
-      </div>
-    </div>
-    <div class="opp-item">
-      <div class="opp-num" style="color:#79c0ff;">3</div>
-      <div>
-        <div class="opp-title">🔵 Optimización tier pricing Passports (gap competitivo $119–$299)</div>
-        <div class="opp-desc">IVS tiene tier $169 "Best Popular" que llena el gap entre estándar y expedited. Premier/GOV+ usa precios tachados en todos los tiers (quick win de percepción de valor — ningún esfuerzo técnico). HelloGov ofrece Smart $197 (2-3sem) vs MPH Smart $299 (4sem). Un tier intermedio o precios tachados podría aumentar AOV sin afectar CR, impactando revenue por aplicación y por tanto NSM de Passports.</div>
-        <div class="opp-nsm"><span class="badge badge-blue">NSM Passports: MEDIO-ALTO · Revenue por aplicación</span> <span class="badge badge-green" style="margin-left:4px;">Esfuerzo: Bajo (pricing) / Medio (nuevo tier)</span></div>
+      <div class="alert yellow" style="margin:0">
+        <span class="alert-icon">◆</span>
+        <div><strong>Desktop ya es mayoría.</strong><br>El cambio en mix de dispositivos podría estar relacionado con la caída en el tráfico mobile de Google.</div>
       </div>
     </div>
   </div>
 
+  <div class="section-label mb-16">Tickets de soporte — Mayo 2026 (420 total)</div>
   <div class="card">
-    <div class="card-title">📋 Estado roadmap — inferido desde project knowledge (carpeta roadmap Drive vacía)</div>
-    <div class="roadmap-row">
-      <div class="roadmap-col">
-        <div class="roadmap-col-title live-title">🟢 LIVE</div>
-        <div class="roadmap-item"><div class="ri-label">EaseGov</div>MVP: TSA PreCheck, TSA Renewal, SS Card, Passport (Mar 2026)</div>
-        <div class="roadmap-item"><div class="ri-label">Passports</div>Expedited Service en QA para DS-11</div>
-        <div class="roadmap-item"><div class="ri-label">Infra</div>Amplitude EU · Grafana · QlikSense</div>
+    <div class="bar-row">
+      <span class="bar-label">Refunds</span>
+      <div class="bar-track"><div class="bar-fill" style="width:43%;background:var(--red)"></div></div>
+      <span class="bar-count" style="color:var(--red)">181</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">Preguntas generales</span>
+      <div class="bar-track"><div class="bar-fill" style="width:33%;background:#60a5fa"></div></div>
+      <span class="bar-count">137</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">Problemas técnicos</span>
+      <div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--yellow)"></div></div>
+      <span class="bar-count">54</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">Correcciones de datos</span>
+      <div class="bar-track"><div class="bar-fill" style="width:11%;background:#94a3b8"></div></div>
+      <span class="bar-count">45</span>
+    </div>
+    <hr class="divider">
+    <div style="font-size:13px;color:#374151;line-height:1.6">
+      <strong>Señales principales:</strong> 42 tickets de link expirado (fricción post-compra) · 27 tickets de confusión gobierno/privado · Preguntas recurrentes sobre tiempos del gobierno y envío postal.
+    </div>
+    <div class="source-note">📂 Fuente: Tickets_Soporte_EaseGov_y_Sites_Passports_Mayo_2026.xlsx (hoja "Site Passports Tickets May 2026")</div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════ EASEGOV ═══ -->
+<div id="pane-easegov" class="pane">
+
+  <div class="alert red mb-20">
+    <span class="alert-icon">⚠️</span>
+    <div>
+      <div class="alert-title">P0 activo — Drop en /processing-method desde deploy 28 May</div>
+      <div class="alert-body">La introducción de DS-11 Expedited coincide con una caída severa en ese paso. Afecta todos los dispositivos. Se necesita diagnóstico con Clarity + Amplitude antes de decidir hotfix o rollback parcial.</div>
+      <div class="alert-source">Fuente: Amplitude_análisis_comportamiento_usuario_EaseGov_21_al_27_Mayo.md</div>
+    </div>
+  </div>
+
+  <div class="section-label mb-16">Estado del funnel</div>
+  <div class="card mb-20">
+    <table class="data-table">
+      <thead>
+        <tr><th>Paso</th><th>Estado</th><th>Qué hacer</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>get_started → Registro</td>
+          <td><span class="status green">✓ Estable</span></td>
+          <td style="color:var(--muted)">Monitorear</td>
+        </tr>
+        <tr>
+          <td>Registro → Selección de servicio</td>
+          <td><span class="status green">✓ Estable</span></td>
+          <td style="color:var(--muted)">Monitorear</td>
+        </tr>
+        <tr style="background:#fdf0ef">
+          <td><strong>/processing-method</strong></td>
+          <td><span class="status red">⚠ Drop crítico</span></td>
+          <td><strong>P0 — Hotfix o rollback parcial</strong></td>
+        </tr>
+        <tr>
+          <td>Processing → Checkout</td>
+          <td><span class="status yellow">Afectado</span></td>
+          <td style="color:var(--muted)">Derivado del paso anterior</td>
+        </tr>
+        <tr>
+          <td>Checkout → Pago</td>
+          <td><span class="status gray">Sin baseline</span></td>
+          <td style="color:var(--muted)">Pendiente de estabilizar el paso anterior</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="source-note">📂 Fuente: Amplitude_análisis_comportamiento_usuario_EaseGov_21_al_27_Mayo.md</div>
+  </div>
+
+  <div class="grid-2 mb-20">
+    <div>
+      <div class="section-label mb-16">Tickets de soporte — Mayo 2026 (336 total)</div>
+      <div class="card">
+        <div class="bar-row">
+          <span class="bar-label">Refunds</span>
+          <div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--red)"></div></div>
+          <span class="bar-count" style="color:var(--red)">186</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Preguntas generales</span>
+          <div class="bar-track"><div class="bar-fill" style="width:39%;background:#60a5fa"></div></div>
+          <span class="bar-count">130</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Correcciones</span>
+          <div class="bar-track"><div class="bar-fill" style="width:3%;background:#94a3b8"></div></div>
+          <span class="bar-count">11</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Problemas técnicos</span>
+          <div class="bar-track"><div class="bar-fill" style="width:1.5%;background:var(--yellow)"></div></div>
+          <span class="bar-count">5</span>
+        </div>
+        <div class="source-note">📂 Fuente: xlsx hoja "EaseGov Tickets May 2026"</div>
       </div>
-      <div class="roadmap-col">
-        <div class="roadmap-col-title build-title">🟡 IN BUILD</div>
-        <div class="roadmap-item"><div class="ri-label">EaseGov · P0</div>Fix regresión /processing-method</div>
-        <div class="roadmap-item"><div class="ri-label">EaseGov</div>Apple Pay como APM (PASGF-740)</div>
-        <div class="roadmap-item"><div class="ri-label">Passports</div>service_selected en eventos Amplitude (PASGF-1678 / epic 1676)</div>
-        <div class="roadmap-item"><div class="ri-label">Metrics</div>Dashboard salud producto Q3 + baselines KPI</div>
-      </div>
-      <div class="roadmap-col">
-        <div class="roadmap-col-title next-title">🔵 NEXT</div>
-        <div class="roadmap-item"><div class="ri-label">Passports</div>A/B test Step 1 mobile (requiere baseline limpio Google)</div>
-        <div class="roadmap-item"><div class="ri-label">EaseGov</div>Redefinición NSM EaseGov (Patricia — Q3)</div>
-        <div class="roadmap-item"><div class="ri-label">Passports</div>Tier pricing intermedio / precios tachados</div>
-        <div class="roadmap-item"><div class="ri-label">Ambos</div>In-product survey (decidido Dic 2025 · pendiente)</div>
-        <div class="roadmap-item"><div class="ri-label">Passports</div>Dedup eventos: suscription_plan_selected</div>
+    </div>
+
+    <div>
+      <div class="section-label mb-16">Por qué piden refund — Patrones cualitativos</div>
+      <div class="card">
+        <table class="data-table">
+          <thead><tr><th>Motivo</th><th>Tickets</th><th>%</th></tr></thead>
+          <tbody>
+            <tr style="background:#fdf0ef">
+              <td><strong>"Creía que era el sitio del gobierno"</strong></td>
+              <td><strong style="color:var(--red)">141</strong></td>
+              <td><strong style="color:var(--red)">42%</strong></td>
+            </tr>
+            <tr>
+              <td>"TSA = pass inmediato" (expectativa errónea)</td>
+              <td>~20</td>
+              <td>~6%</td>
+            </tr>
+            <tr>
+              <td>Preguntas sobre citas TSA</td>
+              <td>~15</td>
+              <td>~4%</td>
+            </tr>
+            <tr>
+              <td>Cobro duplicado</td>
+              <td>~3</td>
+              <td>&lt;1%</td>
+            </tr>
+            <tr>
+              <td>Link o proceso no funciona</td>
+              <td>7</td>
+              <td>2%</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="source-note">📂 Análisis cualitativo del xlsx · mayo 2026</div>
       </div>
     </div>
   </div>
+
 </div>
+
+<!-- ═══════════════════════════════════════════ MERCADO ═══ -->
+<div id="pane-intel" class="pane">
+
+  <div class="gap-banner">
+    ⚠️ <div>Las carpetas <code>04_mercado/competitive Intelligence/Passports/</code> y <code>04_mercado/CI/EaseGov/</code> están vacías en Drive. Los datos de competidores provienen de <strong>competidores.docx</strong> del project knowledge (análisis Abr–May 2026).</div>
+  </div>
+
+  <div class="grid-2 mb-20">
+    <div>
+      <div class="section-label mb-16">Competidores Passports — 12 monitoreados</div>
+      <div class="card">
+        <div class="alert yellow" style="margin-bottom:14px">
+          <span>⚡</span>
+          <div><strong>2 motores white-label detectados.</strong> 5 sitios distintos son en realidad 2 operaciones — esto no aparece en ninguna herramienta de mercado estándar.</div>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Competidor</th><th>Precio entrada</th><th>Tier popular</th><th>Ventaja clave</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RushMyPassport</td>
+              <td>$119</td>
+              <td>$299 (7–9d) ⭐</td>
+              <td>FedEx badge · 5 tiers</td>
+            </tr>
+            <tr>
+              <td>Premier / GOV+</td>
+              <td>$97</td>
+              <td>$297 tachado</td>
+              <td>Apple Pay · precios tachados</td>
+            </tr>
+            <tr>
+              <td>IVS</td>
+              <td>$119</td>
+              <td>$169 "Best Pop."</td>
+              <td>Tier intermedio que llena el gap</td>
+            </tr>
+            <tr>
+              <td>HelloGov</td>
+              <td>$197 Smart</td>
+              <td>$399 (6–10d)</td>
+              <td>Add-on "Recommended"</td>
+            </tr>
+            <tr style="background:#eff6ff;font-weight:600;">
+              <td style="color:#2563eb">MPH (nosotros)</td>
+              <td>$119</td>
+              <td>$299 (4 sem)</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="alert red" style="margin-top:14px;margin-bottom:0">
+          <span>⚠</span>
+          <div>HelloGov ofrece Smart a $197 en 2–3 semanas. MPH cobra $299 por 4 semanas. A precio similar, ellos entregan antes. Quick win: adoptar precios tachados como hace Premier.</div>
+        </div>
+        <div class="source-note">📂 Fuente: competidores.docx · análisis Abr–May 2026</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label mb-16">Radar de noticias — Semana 4 Jul 2026</div>
+      <div class="card">
+
+        <div class="intel-item">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span class="pill pill-p" style="margin:0">Passports</span>
+            <span class="status blue">Informativo</span>
+          </div>
+          <div class="intel-title">State Dept lanza "Patriot Passport" conmemorativo</div>
+          <div class="intel-body">Disponible desde el 6 Jul solo en persona en Washington D.C. No afecta los tiempos estándar de tramitación. Podría generar búsquedas informativas relacionadas con pasaportes.</div>
+          <div class="intel-meta">U.S. Dept. of State · 2 Jul 2026 · Fuente: easegov-radar-2026-07-04.json</div>
+        </div>
+
+        <div class="intel-item">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span class="pill pill-e" style="margin:0">EaseGov</span>
+            <span class="status yellow">Vigilar</span>
+          </div>
+          <div class="intel-title">SSA anuncia tiempos de espera mínimos históricos</div>
+          <div class="intel-body">385 millones de transacciones online en 2026 (+37% vs 2024). Esperas en oficinas reducidas un 30%. Podría reducir la percepción de urgencia de usar EaseGov como servicio de asistencia.</div>
+          <div class="intel-meta">Social Security Administration · 29 Jun 2026 · Fuente: radar Drive</div>
+        </div>
+
+        <div class="intel-item">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span class="pill pill-e" style="margin:0">EaseGov</span>
+            <span class="status yellow">Vigilar</span>
+          </div>
+          <div class="intel-title">TSA + Google Wallet lanzan PreCheck Touchless ID</div>
+          <div class="intel-body">Los miembros de TSA PreCheck pueden verificar su identidad por reconocimiento facial en las lanes, sin presentar ID físico. Señal de que TSA mejora su UX directa. EaseGov debe monitorear el impacto en la propuesta de valor del proceso guiado.</div>
+          <div class="intel-meta">TSA · 24 Jun 2026 · Fuente: easegov-radar-2026-07-01.json</div>
+        </div>
+
+        <div class="intel-item">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span class="pill pill-e" style="margin:0">EaseGov</span>
+            <span class="status red">Riesgo</span>
+          </div>
+          <div class="intel-title">FTC: $3.5B perdidos por imposter scams en 2025</div>
+          <div class="intel-body">Los fraudes de impersonación de gobierno suman $920M. Los 141 tickets de confusión gobierno/privado en EaseGov en Mayo coinciden con este patrón de mercado. Refuerza la urgencia de comunicar con claridad que EaseGov es un servicio privado de asistencia.</div>
+          <div class="intel-meta">FTC · 15 Jun 2026 · Fuente: easegov-radar-2026-06-23.json</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════ OPORTUNIDADES ═══ -->
+<div id="pane-opp" class="pane">
+
+  <div class="section-label mb-16">Top 3 oportunidades priorizadas por impacto en NSM</div>
+
+  <div class="opp-card">
+    <div class="opp-num-wrap opp-num-1">1</div>
+    <div>
+      <div class="pill pill-e">EaseGov</div>
+      <div class="opp-title">Corregir la regresión en /processing-method</div>
+      <div class="opp-desc">
+        Desde el deploy del 28 de Mayo, usuarios que llegan a este paso abandonan antes de llegar al pago. Al no haber un baseline pre-deploy limpio, no sabemos cuánto está costando en conversión. Cada día sin fix es revenue perdido y NSM deteriorado.<br><br>
+        <strong>Qué hacer:</strong> Diagnosis con Microsoft Clarity + Amplitude para identificar si es un bug UI, un problema de flujo o una pantalla confusa. Decidir entre hotfix o rollback parcial según el diagnóstico.
+      </div>
+      <div class="opp-tags">
+        <span class="opp-tag impact-high">Impacto NSM: Alto · Inmediato</span>
+        <span class="opp-tag effort-med">Esfuerzo: Medio</span>
+      </div>
+      <div class="source-note">📂 Amplitude_análisis_comportamiento_EaseGov_21_27_Mayo.md · PASGF-740</div>
+    </div>
+  </div>
+
+  <div class="opp-card">
+    <div class="opp-num-wrap opp-num-2">2</div>
+    <div>
+      <div class="pill pill-e">EaseGov</div>
+      <div class="opp-title">Dejar claro que EaseGov no es el gobierno</div>
+      <div class="opp-desc">
+        141 de 336 tickets en Mayo son de usuarios que creían estar en el sitio oficial. La FTC reporta $920M en pérdidas por impersonadores de gobierno en 2025. EaseGov está capturando tráfico de usuarios que buscan el servicio oficial pero no entienden que es un servicio privado de asistencia.<br><br>
+        <strong>Qué hacer:</strong> Revisar la propuesta de valor antes del pago. El usuario debe entender exactamente qué compra (asistencia para preparar el formulario) antes de introducir su tarjeta. Copy más explícito en landing y en el paso pre-checkout.
+      </div>
+      <div class="opp-tags">
+        <span class="opp-tag impact-high">Impacto NSM: Alto · Retención</span>
+        <span class="opp-tag effort-low">Esfuerzo: Bajo–Medio</span>
+      </div>
+      <div class="source-note">📂 xlsx tickets Mayo · easegov-radar-2026-06-23.json (FTC)</div>
+    </div>
+  </div>
+
+  <div class="opp-card">
+    <div class="opp-num-wrap opp-num-3">3</div>
+    <div>
+      <div class="pill pill-p">Passports</div>
+      <div class="opp-title">Adoptar precios tachados y explorar un tier intermedio (~$169)</div>
+      <div class="opp-desc">
+        Premier/GOV+ usa precios tachados en todos sus tiers y eso mejora la percepción de valor sin ningún cambio técnico. IVS tiene un tier a $169 "Best Popular" que llena el gap entre $119 y $299 y aumenta el ticket medio. HelloGov cobra $197 por un Smart Service de 2–3 semanas; MPH cobra $299 por 4 semanas.<br><br>
+        <strong>Qué hacer (por orden de esfuerzo):</strong> Primero añadir precios tachados a los tiers actuales (1–2 días de trabajo). Después, evaluar si un tier intermedio a ~$169 aumenta el AOV sin canibalizar el $299.
+      </div>
+      <div class="opp-tags">
+        <span class="opp-tag impact-med">Impacto NSM: Medio–Alto · Revenue/aplicación</span>
+        <span class="opp-tag effort-low">Esfuerzo: Bajo (precios tachados) / Medio (nuevo tier)</span>
+      </div>
+      <div class="source-note">📂 competidores.docx · análisis Abr–May 2026</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ROADMAP -->
+  <div class="section-label mb-16">Estado del roadmap</div>
+  <div class="gap-banner">
+    ⚠️ <div>La carpeta <code>03_metricas/roadmap/</code> está vacía en Drive. El roadmap siguiente está inferido desde <strong>objetivos.docx</strong> y memoria de sesiones anteriores. Verificar con Desi / Jira.</div>
+  </div>
+
+  <div class="roadmap-grid">
+    <div>
+      <div class="roadmap-col-head rh-live">● Live</div>
+      <div class="roadmap-item">
+        <div class="ri-tag">EaseGov</div>
+        MVP activo: TSA PreCheck new/renewal, Social Security Card, Passport (Mar 2026)
+      </div>
+      <div class="roadmap-item">
+        <div class="ri-tag">Passports</div>
+        Expedited Service en QA para DS-11
+      </div>
+      <div class="roadmap-item">
+        <div class="ri-tag">Infraestructura</div>
+        Amplitude EU · Grafana · QlikSense
+      </div>
+    </div>
+
+    <div>
+      <div class="roadmap-col-head rh-build">◑ In Build</div>
+      <div class="roadmap-item" style="border-color:var(--red);border-left:3px solid var(--red)">
+        <div class="ri-tag" style="color:var(--red)">EaseGov · P0</div>
+        Fix regresión /processing-method (DS-11 Expedited)
+      </div>
+      <div class="roadmap-item">
+        <div class="ri-tag">EaseGov</div>
+        Apple Pay como método de pago (PASGF-740)
+      </div>
+      <div class="roadmap-item">
+        <div class="ri-tag">Passports</div>
+        Propiedad service_selected en eventos Amplitude (PASGF-1678 / epic 1676)
+      </div>
+      <div class="roadmap-item">
+        <div class="ri-tag">Métricas</div>
+        Dashboard salud producto Q3 + baselines KPI
+      </div>
+    </div>
+
+    <div>
+      <div class="roadmap-col-head rh-next">○ Next</div>
+      <div class="roadmap-item">
+        <div class="ri-tag">Passports</div>
+        A/B test Step 1 mobile (requiere baseline limpio Google)
+      </div>
+      <div class="roadmap-item">
+        <div class="ri-tag">EaseGov</div>
+        Redefinición formal NSM EaseGov con Patricia (Q3)
+      </div>
+      <div class="roadmap-item">
+        <div class="ri-tag">Passports</div>
+        Precios tachados / tier intermedio ~$169
+      </div>
+      <div class="roadmap-item">
+        <div class="ri-tag">Ambos</div>
+        In-product survey (decidido Dic 2025 · pendiente de implementar)
+      </div>
+      <div class="roadmap-item">
+        <div class="ri-tag">Passports</div>
+        Deduplicar evento <code>suscription_plan_selected</code> en Amplitude
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /content -->
 
 <script>
-function showTab(tab, el, cls) {
+function showTab(tab, el) {
   document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active-p','active-e','active-both'); });
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
   document.getElementById('pane-' + tab).classList.add('active');
-  el.classList.add(cls);
+  el.classList.add('active');
 }
 </script>
 </body>
